@@ -4,12 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends AbstractController
 {
+	private $manager;
+
+	public function __construct(EntityManagerInterface $manager) {
+		$this->manager = $manager;
+	}
 	/**
 	* @Route("/tasks", name="task_list")
 	*/
@@ -35,10 +41,10 @@ class TaskController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$task->setCreatedAt(new \Datetime());
 			$task->setIsDone(false);
-			$em = $this->getDoctrine()->getManager();
+			$task->setUser($this->getUser());
 
-			$em->persist($task);
-			$em->flush();
+			$this->manager->persist($task);
+			$this->manager->flush();
 
 			$this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
@@ -63,7 +69,7 @@ class TaskController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$this->getDoctrine()->getManager()->flush();
+			$this->manager->flush();
 
 			$this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -84,7 +90,7 @@ class TaskController extends AbstractController
 	public function toggleTask(Task $task)
 	{
 		$task->setIsDone(!$task->getIsDone());
-		$this->getDoctrine()->getManager()->flush();
+		$this->manager->flush();
 
 		$this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -98,9 +104,8 @@ class TaskController extends AbstractController
 	*/
 	public function deleteTask(Task $task)
 	{
-		$em = $this->getDoctrine()->getManager();
-		$em->remove($task);
-		$em->flush();
+		$this->manager->remove($task);
+		$this->manager->flush();
 
 		$this->addFlash('success', 'La tâche a bien été supprimée.');
 
