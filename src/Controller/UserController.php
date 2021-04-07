@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,7 @@ class UserController extends AbstractController
 		$this->manager = $manager;
 	}
 	/**
+  * @IsGranted("ROLE_ADMIN")
 	* @Route("/users", name="user_list")
 	*/
 	public function listUsers()

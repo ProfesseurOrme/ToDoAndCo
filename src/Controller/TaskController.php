@@ -5,10 +5,14 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
+ */
 class TaskController extends AbstractController
 {
 	private $manager;
@@ -64,22 +68,26 @@ class TaskController extends AbstractController
 	*/
 	public function editTask(Task $task, Request $request)
 	{
-		$form = $this->createForm(TaskType::class, $task);
+		if($task->getUser()->getUsername() === $this->getUser()->getUsername() || $this->getUser()->getRoles()[0] === "ROLE_ADMIN") {
+			$form = $this->createForm(TaskType::class, $task);
 
-		$form->handleRequest($request);
+			$form->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid()) {
-			$this->manager->flush();
+			if ($form->isSubmitted() && $form->isValid()) {
+				$this->manager->flush();
 
-			$this->addFlash('success', 'La tâche a bien été modifiée.');
+				$this->addFlash('success', 'La tâche a bien été modifiée.');
 
+				return $this->redirectToRoute('task_list');
+			}
+
+			return $this->render('task/edit.html.twig', [
+				'form' => $form->createView(),
+				'task' => $task,
+			]);
+		} else {
 			return $this->redirectToRoute('task_list');
 		}
-
-		return $this->render('task/edit.html.twig', [
-			'form' => $form->createView(),
-			'task' => $task,
-		]);
 	}
 
 	/**
@@ -92,7 +100,11 @@ class TaskController extends AbstractController
 		$task->setIsDone(!$task->getIsDone());
 		$this->manager->flush();
 
-		$this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+		if($task->getIsDone()) {
+			$this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+		} else {
+			$this->addFlash('warning', sprintf('La tâche %s a bien été marquée comme non terminée.', $task->getTitle()));
+		}
 
 		return $this->redirectToRoute('task_list');
 	}
@@ -104,11 +116,13 @@ class TaskController extends AbstractController
 	*/
 	public function deleteTask(Task $task)
 	{
-		$this->manager->remove($task);
-		$this->manager->flush();
+		if($task->getUser()->getUsername() === $this->getUser()->getUsername() || $this->getUser()->getRoles()[0] === "ROLE_ADMIN") {
+			$this->manager->remove($task);
+			$this->manager->flush();
 
-		$this->addFlash('success', 'La tâche a bien été supprimée.');
+			$this->addFlash('success', 'La tâche a bien été supprimée.');
 
+		}
 		return $this->redirectToRoute('task_list');
 	}
 }

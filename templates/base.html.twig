@@ -40,7 +40,7 @@
             <div class="row">
                 <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
 
-                {% if app.user %}
+                {% if app.user and is_granted("ROLE_ADMIN")%}
                     <a href="{{ path('user_list') }}" class="btn btn-warning">Liste des utilisateurs</a>
                 {% endif %}
 
@@ -58,6 +58,12 @@
                     {% for flash_message in app.session.flashBag.get('success') %}
                         <div class="alert alert-success" role="alert">
                             <strong>Superbe !</strong> {{ flash_message }}
+                        </div>
+                    {% endfor %}
+
+                    {% for flash_message in app.session.flashBag.get('warning') %}
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Mince !</strong> {{ flash_message }}
                         </div>
                     {% endfor %}
 

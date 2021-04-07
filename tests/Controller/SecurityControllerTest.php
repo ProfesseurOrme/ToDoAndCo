@@ -52,11 +52,7 @@
 
 		public function testLogout() {
 
-			$userRepo = $this->client->getContainer()->get("doctrine")->getManager();
-
-			$user = $userRepo->getRepository(User::class)->findOneBy(["username" => "admin"]);
-
-			$this->login($this->client, $user);
+			$this->loginWithAdminCredentials($this->client);
 
 			$crawler = $this->client->request("GET", "/");
 
@@ -69,5 +65,6 @@
 			$this->assertRouteSame("homepage");
 			$this->client->followRedirect();
 			$this->assertRouteSame("login");
+			$this->assertResponseStatusCodeSame(Response::HTTP_OK);
 		}
 	}

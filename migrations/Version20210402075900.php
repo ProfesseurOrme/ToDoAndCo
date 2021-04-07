@@ -24,7 +24,7 @@ final class Version20210402075900 extends AbstractMigration
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_527EDB25A76ED395 ON task (user_id)');
         $this->addSql('INSERT INTO user (username, roles, password, email) VALUES ("Anonymous", "[]", "anonymous", "anonymous")');
-				$this->addSql('UPDATE task SET user_id = 2 WHERE user_id IS NULL');
+				$this->addSql('UPDATE task SET user_id = 1 WHERE user_id IS NULL');
     }
 
     public function down(Schema $schema) : void

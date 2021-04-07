@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -26,13 +27,21 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, ['label' => 'Adresse email'])
 						->add('roles', ChoiceType::class, [
 							'required' => true,
-							'multiple' => true,
-							'expanded' => false,
 							'choices' => [
 								'Rôle Utilisateur' => 'ROLE_USER',
 								'Rôle Administrateur' => 'ROLE_ADMIN'
 							]
 						])
         ;
+
+			$builder->get('roles')
+				->addModelTransformer(new CallbackTransformer(
+					function ($rolesArray) {
+						return count($rolesArray)? $rolesArray[0]: null;
+					},
+					function ($rolesString) {
+						return [$rolesString];
+					}
+				));
     }
 }
