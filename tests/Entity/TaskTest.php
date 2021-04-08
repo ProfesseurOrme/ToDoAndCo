@@ -4,9 +4,12 @@
 
 	use App\Entity\Task;
 	use App\Entity\User;
+	use App\Tests\LoginUser;
 	use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 	class TaskTest extends KernelTestCase {
+
+		use LoginUser;
 
 		public function getEntityUser() : User {
 			return (new User())
@@ -32,6 +35,7 @@
 
 			$errors = self::$container->get("validator")->validate($task);
 
+			$this->assertInstanceOf(\DateTime::class, $task->getCreatedAt());
 			$this->assertCount($nbErrors, $errors);
 		}
 

@@ -20,7 +20,7 @@
 
 		public function testLoginSuccess() {
 
-			$crawler = $this->client->request("GET", "login");
+			$crawler = $this->client->request("GET", "/login");
 
 			$form = $crawler->selectButton("Se connecter")->form([
 				"_username" => "admin",
@@ -54,11 +54,7 @@
 
 			$this->loginWithAdminCredentials($this->client);
 
-			$crawler = $this->client->request("GET", "/");
-
-			$link = $crawler->selectLink("Se déconnecter")->link();
-
-			$this->client->click($link);
+			$this->client->request("GET", "/logout");
 
 			$this->assertRouteSame("logout");
 			$this->client->followRedirect();

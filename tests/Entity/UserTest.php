@@ -2,7 +2,9 @@
 
 	namespace App\Tests\Entity;
 
+	use App\Entity\Task;
 	use App\Entity\User;
+	use Doctrine\Common\Collections\ArrayCollection;
 	use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 	class UserTest extends KernelTestCase {
@@ -59,5 +61,18 @@
 			;
 
 			$this->assertHasErrors($user, 1);
+		}
+
+		public function testAddAndRemoveUser() {
+
+			$task = new Task();
+
+			$user = $this->getEntity()
+				->addTask($task)
+			;
+			$this->assertInstanceOf(ArrayCollection::class, $user->getTasks());
+			$this->assertNotEmpty($user->getTasks());
+			$user->removeTask($task);
+			$this->assertEmpty($user->getTasks());
 		}
 	}

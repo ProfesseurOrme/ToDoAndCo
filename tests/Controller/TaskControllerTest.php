@@ -112,7 +112,7 @@
 			$this->assertSelectorExists(".alert.alert-success");
 		}
 
-		public function testToggleTask() {
+		private function getToggleTask() : void {
 			$this->loginWithUserCredentials($this->client);
 
 			$task = $this->getLastTaskForTest();
@@ -122,11 +122,16 @@
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
 			$this->assertRouteSame("task_list");
-			if($task->getIsDone()) {
-				$this->assertSelectorExists(".alert.alert-success");
-			}else {
-				$this->assertSelectorExists(".alert.alert-warning");
-			}
+		}
+
+		public function testToggleTaskToTrue() {
+			$this->getToggleTask();
+			$this->assertSelectorExists(".alert.alert-success");
+		}
+
+		public function testToggleTaskToFalse() {
+			$this->getToggleTask();
+			$this->assertSelectorExists(".alert.alert-warning");
 		}
 
 		public function testDeleteTaskWithAnotherUser() {
