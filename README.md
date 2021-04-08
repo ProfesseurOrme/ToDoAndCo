@@ -10,8 +10,9 @@ Ce qui est demandé :
 * Faire un audit de performance.
 
 Les livrables sont disponibles dans `./deliverables/`. Le dossier contient :
-* Un dossier `test-coverage/` : analyse généré par PHPUnit indiquant le taux de couverture de code des tests réalisées.
-* Un dossier `UMLDiagrams/` : Diagrammes UML demandés.
+* Un dossier `test-coverage.zip` : analyse généré par PHPUnit indiquant le taux de couverture de code des tests 
+  réalisées.
+* Un dossier `UMLDiagrams.zip` : Diagrammes UML demandés.
 * Un fichier `CONTRIBUTE.md` : Documentation indiquant comment contribuer au projet.
 * Un fichier `Symfony_Authentication.pdf` : Documentation technique concernant l'authentification.
 * Un fichier `Audit.pdf` : Rapport audit de qualité de code et de performance.
