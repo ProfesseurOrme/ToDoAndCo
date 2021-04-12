@@ -58,3 +58,29 @@ Les livrables sont disponibles dans `./deliverables/`. Le dossier contient :
 6- Votre projet est prêt à l'utilisation ! Pour utiliser l'application dans un environnement local, veuillez vous
  renseigner sur cette
  [documentation](https://symfony.com/doc/4.4/setup.html#running-symfony-applications).
+
+## Tester l'application (optionnel)
+
+Des tests ont été écrits afin de vérifier l'intégrité et le fonctionnement de l'application. Afin de pouvoir les 
+lancer :
+
+1- Créez un fichier `.env.test.local`, avec une variable d'environnement qui contient l'adresse de la base de 
+données de test voulue:
+```
+    DATABASE_URL=mysql://db.username:db.password@127.0.0.1:3306/todo_and_co_test
+```
+
+2- Créez la base de données de test :
+```
+    php bin/console doctrine:database:create --env=test
+```
+
+3- Lancez le test via la commande : 
+```
+    /vendor/bin/phpunit
+```
+
+4-ous pouvez générer un test de couverture de code avec la commande ci-dessous (Le résultat est disponible à dans `./html/test-coverage/index.html`:
+```
+    /vendor/bin/phpunit --coverage-html html/test-coverage
+```

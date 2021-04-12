@@ -4,6 +4,8 @@
 
 	use App\Tests\LoginUser;
 	use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+	use Symfony\Bundle\FrameworkBundle\Console\Application;
+	use Symfony\Component\Console\Input\StringInput;
 	use Symfony\Component\HttpFoundation\Response;
 
 	class TaskControllerTest extends WebTestCase {
@@ -12,8 +14,38 @@
 
 		private $client;
 
+		protected static $application;
+
 		protected function setUp() :void {
+			self::runCommand("doctrine:database:create --env=test");
+			self::runCommand('doctrine:schema:update --force --env=test');
+			self::runCommand("doctrine:fixtures:load --env=test -n");
+			self::ensureKernelShutdown();
 			$this->client = static::createClient();
+		}
+
+		protected static function runCommand($command)
+		{
+			$command = sprintf('%s --quiet', $command);
+
+			return self::getApplication()->run(new StringInput($command));
+		}
+
+		protected static function getApplication()
+		{
+			if (null === self::$application) {
+
+				$kernel = static::createKernel();
+				self::$application = new Application($kernel);
+				self::$application->setAutoExit(false);
+			}
+
+			return self::$application;
+		}
+
+		protected function tearDown(): void
+		{
+			self::runCommand("doctrine:schema:drop --env=test --force");
 		}
 
 		public function testListTasks() {
@@ -52,20 +84,10 @@
 			$this->assertSelectorExists(".alert.alert-success");
 		}
 
-		/**
-		 * Return the last task created with the previous test
-		 */
-		private function getLastTaskForTest() {
-			$manager = $this->client->getContainer()->get("doctrine")->getManager();
-			return $manager->getRepository('App:Task')->findOneBy([], ['id' => 'desc']);
-		}
-
 		public function testEditTask() {
 			$this->loginWithUserCredentials($this->client);
 
-			$task = $this->getLastTaskForTest();
-
-			$crawler = $this->client->request("GET", "/tasks/".$task->getId()."/edit");
+			$crawler = $this->client->request("GET", "/tasks/4/edit");
 
 			$form = $crawler->selectButton("Modifier")->form([
 				"task[title]" => "Test de titre",
@@ -83,9 +105,7 @@
 		public function testEditTaskWithAnotherUserCredentials() {
 			$this->loginWithAnotherUserCredentials($this->client);
 
-			$task = $this->getLastTaskForTest();
-
-			$crawler = $this->client->request("GET", "/tasks/".$task->getId()."/edit");
+			$crawler = $this->client->request("GET", "/tasks/4/edit");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -95,9 +115,7 @@
 		public function testEditTaskWithAdminCredentials() {
 			$this->loginWithAdminCredentials($this->client);
 
-			$task = $this->getLastTaskForTest();
-
-			$crawler = $this->client->request("GET", "/tasks/".$task->getId()."/edit");
+			$crawler = $this->client->request("GET", "/tasks/4/edit");
 
 			$form = $crawler->selectButton("Modifier")->form([
 				"task[title]" => "Test de titre",
@@ -115,9 +133,7 @@
 		private function getToggleTask() : void {
 			$this->loginWithUserCredentials($this->client);
 
-			$task = $this->getLastTaskForTest();
-
-			$this->client->request("GET", "/tasks/".$task->getId()."/toggle");
+			$this->client->request("GET", "/tasks/4/toggle");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -131,15 +147,14 @@
 
 		public function testToggleTaskToFalse() {
 			$this->getToggleTask();
+			$this->assertSelectorExists(".alert.alert-success");
+			$this->getToggleTask();
 			$this->assertSelectorExists(".alert.alert-warning");
 		}
 
 		public function testDeleteTaskWithAnotherUser() {
 			$this->loginWithAnotherUserCredentials($this->client);
-
-			$task = $this->getLastTaskForTest();
-
-			$crawler = $this->client->request("GET", "/tasks/".$task->getId()."/delete");
+			$crawler = $this->client->request("GET", "/tasks/4/delete");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -149,9 +164,7 @@
 		public function testDeleteTaskWithAdminCredentials() {
 			$this->loginWithAdminCredentials($this->client);
 
-			$task = $this->getLastTaskForTest();
-
-			$crawler = $this->client->request("GET", "/tasks/".$task->getId()."/delete");
+			$crawler = $this->client->request("GET", "/tasks/4/delete");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();

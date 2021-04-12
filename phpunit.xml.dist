@@ -28,6 +28,7 @@
             <exclude>
                 <file>./src/Kernel.php</file>
                 <directory suffix=".php">./src/Repository</directory>
+                <directory suffix=".php">./src/DataFixtures</directory>
             </exclude>
         </whitelist>
     </filter>

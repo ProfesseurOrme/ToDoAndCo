@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210402075900 extends AbstractMigration
+final class Version20210409101511 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,8 +23,8 @@ final class Version20210402075900 extends AbstractMigration
         $this->addSql('ALTER TABLE task ADD user_id INT');
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_527EDB25A76ED395 ON task (user_id)');
-        $this->addSql('INSERT INTO user (username, roles, password, email) VALUES ("Anonymous", "[]", "anonymous", "anonymous")');
-				$this->addSql('UPDATE task SET user_id = 1 WHERE user_id IS NULL');
+				$this->addSql('INSERT INTO user (username, roles, password, email) VALUES ("Anonymous", "[]", "anonymous", "anonymous")');
+				$this->addSql('UPDATE task SET user_id = (SELECT id FROM user WHERE username =  "Anonymous") WHERE user_id IS NULL');
     }
 
     public function down(Schema $schema) : void
