@@ -19,8 +19,10 @@ Cela n'affectera pas le dépôt originel.
 page-ci](https://github.com/ProfesseurOrme/ToDoAndCo#readme).
 
 4- Codez et apportez vos modifications sur votre projet !! Si vous apportez des modifications ou des améliorations, 
-n'oubliez pas de créer les tests correspondants et de les lancer avec `/vendor/bin/phpunit/` et de lancer 
-`/vendor/bin/phpunit/ --coverage-html html/test-coverage` pour vérifier le taux de couverture.
+n'oubliez pas de créer les tests correspondants et de les lancer avec `/vendor/bin/phpunit` et de lancer 
+`/vendor/bin/phpunit --coverage-html deliverables/test-coverage` pour vérifier le taux de couverture.  
+Une fois le test de couverture fait, ouvrez le fichier `VotreProjet/deliverables/test-coverage/index.html` dans 
+votre navigateur.
 
 5- Si les tests sont tous valides, et que vous voulez soumettre votre travail au gestionnaire du dépôt originel, 
 rendez vous sur votre fork sur GitHub :

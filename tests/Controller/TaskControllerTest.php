@@ -3,49 +3,18 @@
 	namespace App\Tests\Controller;
 
 	use App\Tests\LoginUser;
-	use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-	use Symfony\Bundle\FrameworkBundle\Console\Application;
-	use Symfony\Component\Console\Input\StringInput;
 	use Symfony\Component\HttpFoundation\Response;
 
-	class TaskControllerTest extends WebTestCase {
+	class TaskControllerTest extends ExtendedWebTestCase {
 
 		use LoginUser;
 
 		private $client;
 
-		protected static $application;
-
 		protected function setUp() :void {
-			self::runCommand("doctrine:database:create --env=test");
-			self::runCommand('doctrine:schema:update --force --env=test');
-			self::runCommand("doctrine:fixtures:load --env=test -n");
+			$this->initializeTest();
 			self::ensureKernelShutdown();
 			$this->client = static::createClient();
-		}
-
-		protected static function runCommand($command)
-		{
-			$command = sprintf('%s --quiet', $command);
-
-			return self::getApplication()->run(new StringInput($command));
-		}
-
-		protected static function getApplication()
-		{
-			if (null === self::$application) {
-
-				$kernel = static::createKernel();
-				self::$application = new Application($kernel);
-				self::$application->setAutoExit(false);
-			}
-
-			return self::$application;
-		}
-
-		protected function tearDown(): void
-		{
-			self::runCommand("doctrine:schema:drop --env=test --force");
 		}
 
 		public function testListTasks() {
@@ -170,5 +139,10 @@
 			$this->client->followRedirect();
 			$this->assertRouteSame("task_list");
 			$this->assertSelectorExists(".alert.alert-success");
+		}
+
+		protected function tearDown(): void
+		{
+			$this->tearDownTest();
 		}
 	}

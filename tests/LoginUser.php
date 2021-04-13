@@ -27,6 +27,10 @@
 			return $userManager->getRepository(User::class)->findOneBy(["username" => $role]);
 		}
 
+		/* Add users with different roles that you want to use in your tests */
+		/* Keep in mind that you must create these users with your fixtures before anything */
+		/* Go to src/DataFixtures/AppFixtures.php for that */
+
 		public function loginWithAdminCredentials(KernelBrowser $client) {
 			$this->login($client, $this->searchUser("admin"));
 		}

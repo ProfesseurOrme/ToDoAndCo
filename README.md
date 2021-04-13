@@ -14,7 +14,7 @@ Les livrables sont disponibles dans `./deliverables/`. Le dossier contient :
   réalisées.
 * Un dossier `UMLDiagrams.zip` : Diagrammes UML demandés.
 * Un fichier `CONTRIBUTE.md` : Documentation indiquant comment contribuer au projet.
-* Un fichier `Symfony_Authentication.pdf` : Documentation technique concernant l'authentification.
+* Un fichier `DocumentationTechnique.pdf` : Documentation technique concernant l'authentification.
 * Un fichier `Audit.pdf` : Rapport audit de qualité de code et de performance.
 
 ## Environnement utilisé durant le développement
@@ -82,5 +82,5 @@ données de test voulue:
 
 4-ous pouvez générer un test de couverture de code avec la commande ci-dessous (Le résultat est disponible à dans `./html/test-coverage/index.html`:
 ```
-    /vendor/bin/phpunit --coverage-html html/test-coverage
+    /vendor/bin/phpunit --coverage-html deliverables/test-coverage
 ```
