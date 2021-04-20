@@ -1,5 +1,7 @@
 # Projet 8-ToDo & Co
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e167cb4ce6e41abbc4c1cb4c63e2b6d)](https://www.codacy.com/gh/ProfesseurOrme/ToDoAndCo/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ProfesseurOrme/ToDoAndCo&amp;utm_campaign=Badge_Grade)
+
 Base du projet #8 : Améliorez un projet existant
 
 Ce qui est demandé : 
@@ -10,12 +12,12 @@ Ce qui est demandé :
 * Faire un audit de performance.
 
 Les livrables sont disponibles dans `./deliverables/`. Le dossier contient :
-* Un dossier `test-coverage.zip` : analyse généré par PHPUnit indiquant le taux de couverture de code des tests 
+* Un dossier `test-coverage.zips` : analyse généré par PHPUnit indiquant le taux de couverture de code des tests 
   réalisées.
-* Un dossier `UMLDiagrams.zip` : Diagrammes UML demandés.
+* Un dossier `ToDo_UMLDiagrams.zip` : Diagrammes UML demandés.
 * Un fichier `CONTRIBUTE.md` : Documentation indiquant comment contribuer au projet.
-* Un fichier `DocumentationTechnique.pdf` : Documentation technique concernant l'authentification.
-* Un fichier `Audit.pdf` : Rapport audit de qualité de code et de performance.
+* Un fichier `ToDo_DocumentationTechnique.pdf` : Documentation technique concernant l'authentification.
+* Un fichier `ToDo_AuditApplication.pdf` : Rapport audit de qualité de code et de performance.
 
 ## Environnement utilisé durant le développement
 * [Symfony 4.4.21 LTS](https://symfony.com/doc/4.4/setup.html) 

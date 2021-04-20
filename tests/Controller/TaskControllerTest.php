@@ -20,14 +20,14 @@
 		public function testListTasks() {
 			$this->loginWithAdminCredentials($this->client);
 
-			$crawler = $this->client->request("GET", "/tasks");
+			$this->client->request("GET", "/tasks");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_OK);
 			$this->assertRouteSame("task_list");
 		}
 
 		public function testListTasksWithoutCredentials() {
-			$crawler = $this->client->request("GET", "/tasks");
+			$this->client->request("GET", "/tasks");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -74,7 +74,7 @@
 		public function testEditTaskWithAnotherUserCredentials() {
 			$this->loginWithAnotherUserCredentials($this->client);
 
-			$crawler = $this->client->request("GET", "/tasks/4/edit");
+			$this->client->request("GET", "/tasks/4/edit");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -123,7 +123,7 @@
 
 		public function testDeleteTaskWithAnotherUser() {
 			$this->loginWithAnotherUserCredentials($this->client);
-			$crawler = $this->client->request("GET", "/tasks/4/delete");
+			$this->client->request("GET", "/tasks/4/delete");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
@@ -133,7 +133,7 @@
 		public function testDeleteTaskWithAdminCredentials() {
 			$this->loginWithAdminCredentials($this->client);
 
-			$crawler = $this->client->request("GET", "/tasks/4/delete");
+			$this->client->request("GET", "/tasks/4/delete");
 
 			$this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 			$this->client->followRedirect();
