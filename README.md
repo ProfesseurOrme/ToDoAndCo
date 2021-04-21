@@ -51,7 +51,7 @@ Les livrables sont disponibles dans `./deliverables/`. Le dossier contient :
 ```
 4- Créez les différentes tables de la base de données :
 ```
-    php bin/console doctrine:migrations:migrate
+    php bin/console doctrine:schema:create
 ```
 5- Installer des données fictives avec des fixtures pour agrémenter le site :
 ```
@@ -79,10 +79,10 @@ données de test voulue:
 
 3- Lancez le test via la commande : 
 ```
-    /vendor/bin/phpunit
+    vendor/bin/phpunit
 ```
 
 4-ous pouvez générer un test de couverture de code avec la commande ci-dessous (Le résultat est disponible à dans `./html/test-coverage/index.html`:
 ```
-    /vendor/bin/phpunit --coverage-html deliverables/test-coverage
+    vendor/bin/phpunit --coverage-html deliverables/test-coverage
 ```
