@@ -45,7 +45,7 @@
 
 		public function testInvalidEntity() {
 			$task = $this->getEntity()
-				->setTitle((""))
+				->setTitle("")
 				->setContent("")
 			;
 			$this->assertHasErrors($task, 2);
